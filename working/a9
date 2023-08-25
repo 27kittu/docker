@@ -1,0 +1,8 @@
+FROM alpine:latest
+WORKDIR /app
+ADD https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.92/bin/apache-tomcat-8.5.92.tar.gz .
+RUN apk add openjdk11 
+RUN tar -xzvf apache-tomcat-8.5.92.tar.gz
+RUN mv apache-tomcat-8.5.92 tomcat \
+&& chmod u+x tomcat/bin/*.sh 
+CMD ["tomcat/bin/catalina.sh", "run"]
