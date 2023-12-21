@@ -1,0 +1,7 @@
+FROM alpine:latest
+RUN apk add wget zip openjdk11
+WORKDIR /opt
+RUN wget https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.92/src/apache-tomcat-8.5.92-src.zip
+RUN unzip apache-tomcat-8.5.92-src.zip
+RUN chmod -R 777 /opt/apache-tomcat-8.5.92-src/bin
+CMD ["sh", "/opt/apache-tomcat-8.5.92-src/bin/catalina.sh", "start"]
