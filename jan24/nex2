@@ -1,0 +1,20 @@
+FROM alpine
+
+WORKDIR /app
+
+# Download and install Nexus
+ADD https://download.sonatype.com/nexus/3/nexus-3.43.0-01-unix.tar.gz .
+RUN apk --no-cache add tar openjdk8 \
+    && tar -xzvf nexus-3.43.0-01-unix.tar.gz \
+    && mkdir nexus \
+    && mv nexus-* sonatype* nexus/ \
+    && addgroup -S nexus \
+    && adduser -S -D -h /app/nexus -G nexus nexus \
+    && chown -R nexus:nexus nexus/ \
+    && chmod 700 -R nexus/ \
+    && echo -e "\nrun_as_user='nexus'">> nexus/nexus-3.43.0-01/bin/nexus.rc \
+    && ln -s /app/nexus/nexus-3.43.0-01/bin/nexus /etc/init.d/nexus
+
+USER nexus
+
+CMD ["/app/nexus/nexus-3.43.0-01/bin/nexus", "start"]

@@ -1,0 +1,19 @@
+FROM maven as built
+WORKDIR /build
+COPY . .
+RUN mvn clean package
+
+FROM alpine
+WORKDIR /app
+RUN apk add openjdk11 wget doas \
+&& adduser -D tomcat \
+&& echo "permit tomcat as root">/etc/doas.d/doas.conf \
+&& wget -P /app https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.93/bin/apache-tomcat-8.5.93.tar.gz \
+&& tar -xzvf apache-tomcat-8.5.93.tar.gz \
+&& mv apache-tomcat-8.5.93 tomcat \
+&& chown -R tomcat:tomcat /app/tomcat \
+&& chmod 0700  /app/tomcat/bin/*.sh \
+&& chmod 0777 -R /app/tomcat/webapps
+COPY --from=built /build/spring-boot-mongo-1.0.jar  /app/tomcat/wepapps/spring
+USER tomcat
+CMD ["tomcat/bin/catalina.sh", "run"]

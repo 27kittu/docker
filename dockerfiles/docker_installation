@@ -1,0 +1,10 @@
+docker can be installed 
+
+sudo apt install dockerio
+
+
+or using convenient script
+
+curl -o install_docker http://get.docker.com
+
+For permissions(ref:https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket)

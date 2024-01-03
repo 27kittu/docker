@@ -1,0 +1,7 @@
+FROM eclipse/alpine_jdk8
+WORKDIR /app
+ADD https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.92/src/apache-tomcat-8.5.92-src.tar.gz .
+RUN sudo tar -xzvf apache-tomcat-8.5.92-src.tar.gz \
+&& sudo mv apache-tomcat-8.5.92-src tomcat \
+&& sudo chmod 777 -R tomcat 
+#CMD ["tomcat/bin/catalina.sh","start"]
