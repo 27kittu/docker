@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  app2:
+    image: heartocean/docom:1
+    environment:
+      - MONGO_DB_USERNAME=mongodb
+      - MONGO_DB_PASSWORD=mongopass
+      - MONGO_DB_HOSTNAME=mongoh
+    ports:
+      - 80:8080
+    networks: 
+      - springappnet
+
+  mongoh:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongodb
+      - MONGO_INITDB_ROOT_PASSWORD=mongopass
+    ports: 
+      - 27017
+    networks:
+      - springappnet
+    volumes:
+      - type: volume
+        source: vol1
+        target: /data/db
+networks:
+  springappnet:
+volumes:
+  vol1:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.0.21,rw,nfsvers=4"
+      device: ":/mnt/nfs_share"

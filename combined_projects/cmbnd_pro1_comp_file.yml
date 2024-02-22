@@ -1,0 +1,44 @@
+version: '3.8'
+services:
+  springapp1:
+    build: 
+      context: .
+      dockerfile: cmbnd_pro1_dockerfile 
+      args: 
+       buildno: 1
+    environment:
+      MONGO_DB_USERNAME: hitec
+      MONGO_DB_PASSWORD: botanical
+      MONGO_DB_HOSTNAME: gardens
+    ports: 
+      - 80:8080
+    networks:
+      - metronet
+    volumes:
+      #- ./settings.xml:/mavn/maven/conf/settings.xml #this was changed from normal mentioning of 'bindmount'
+      - type: bind
+        source: ./settings.xml
+        target: /mavn/maven/conf/settings.xml
+  gardens:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: hitec
+      MONGO_INITDB_ROOT_PASSWORD: botanical
+    ports:
+      - 27017
+    networks: 
+      - metronet
+    volumes: 
+      - type: volume
+        source: cybervol
+        target: /data/db
+
+networks:
+  metronet:
+volumes:
+  cybervol:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.0.21,rw,nfsvers=4"
+      device: ":/mnt/nfs_share"
