@@ -1,0 +1,34 @@
+version: '3.8'
+services: 
+  coco:
+    image: heartocean/docom:1
+    ports: 
+      - 85:8080
+    environment:
+      - MONGO_DB_USERNAME=demouser
+      - MONGO_DB_PASSWORD=demopass
+      - MONGO_DB_HOSTNAME=cafe
+    networks:
+      - demet
+  cafe:
+    image: mongo
+    ports:
+      - 27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=demouser
+      - MONGO_INITDB_ROOT_PASSWORD=demopass
+    networks: 
+      - demet
+    volumes:
+      - type: volume
+        source: demogo
+        target: /data/db
+networks:
+  demet:
+volumes:
+  demogo:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.0.21,rw,nfsvers=4"
+      device: ":/mnt/nfs_share"

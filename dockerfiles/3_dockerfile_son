@@ -1,0 +1,19 @@
+FROM alpine
+
+WORKDIR /app
+
+# Download and install Nexus
+ADD https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-10.2.1.78527.zip .
+RUN apk --no-cache add zip openjdk11-jre \
+    && unzip sonarqube-10.2.1.78527.zip \
+    && mkdir sonar \
+    && mv sonar* sonar/ \
+    && addgroup -S sonar \
+    && adduser -S -D -h /app/sonar -G sonar sonar \
+    && chown -R sonar:sonar sonar/ \
+    && chmod 700 -R sonar/ \
+
+USER sonar
+
+
+CMD ["/app/sonar/sonarqube-10.2.1.78527/bin/linux-x86-64", "start"]

@@ -1,0 +1,9 @@
+FROM alpine:latest
+RUN apk add openjdk11 maven
+WORKDIR /app
+COPY . .
+RUN mvn clean package
+
+
+#FROM heartocean/working:tomcat
+#WORKDIR /app

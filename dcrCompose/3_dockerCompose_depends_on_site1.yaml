@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  app1:
+    image: heartocean/docom:1
+    depends_on: 
+      - tomdb
+    environment:
+      - MONGO_DB_USERNAME=tom
+      - MONGO_DB_PASSWORD=tom123
+      - MONGO_DB_HOSTNAME=tomdb
+    ports:
+      - 80:8080
+    networks:
+      - springover1
+  tomdb:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=tom
+      - MONGO_INITDB_ROOT_PASSWORD=tom123
+    ports:
+      - 27017
+    networks:
+      - springover1
+    volumes:
+      - type: volume
+        source: extvol1
+        target: /data/db
+
+networks:
+  springover1:
+volumes:
+  extvol1:
+    #external: true
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.0.21,rw,nfsvers=4"
+      device: ":/mnt/nfs_share"

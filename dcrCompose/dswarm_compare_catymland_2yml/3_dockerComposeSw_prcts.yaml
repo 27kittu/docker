@@ -1,0 +1,30 @@
+version: "3.1"
+services:
+  java_webapp:
+    restart: always
+    image: heartocean/docom:1
+    environment:
+    - MONGO_DB_USERNAME=devdb
+    - MONGO_DB_HOSTNAME=mongo
+    - MONGO_DB_PASSWORD=devdb123
+    ports: 
+    - 8:8080
+    working_dir: /tom
+    networks:
+    - springridge
+    depends_on: 
+    - mongo
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+    - MONGO_INITDB_ROOT_USERNAME=devdb
+    - MONGO_INITDB_ROOT_PASSWORD=devdb123
+    networks:
+    - springridge
+    volumes: 
+    - mongodb:/data/db
+networks:
+  springridge:
+volumes:
+  mongodb:

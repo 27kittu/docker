@@ -1,0 +1,29 @@
+Docker socker permissions issues:
+---------------------------------
+- First, check the docker permissions
+
+ls -la /var/run/docker.sock
+
+from the above command, ensure to have permissions of the socker to be 'srw-rw-rw-' or '666'
+if not change the mode of the socker to be '666'
+
+- Check for the presently operating user is added to 'docker' group or not
+
+	groups
+
+if not, add the user to the group
+
+	sudo usermod -aG docker jenkins
+
+- check if added
+
+	groups
+
+if the above command still show as below
+'jenkins docker'
+
+then add 'jenkins' to be 'primarily' in the 'docker' group
+
+	newgrp docker
+
+The above command adds 'jenkins' user's primary group as 'docker' and will have full permissions on the socket

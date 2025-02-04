@@ -1,0 +1,14 @@
+FROM alpine:latest
+RUN apk add wget openjdk11 maven \
+&& wget -P /opt https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.92/src/apache-tomcat-8.5.92-src.tar.gz \
+&& cd /opt \
+&& tar -xzvf apache-tomcat-8.5.92-src.tar.gz \
+&& mv apache-tomcat-8.5.92-src tomcat \
+&& chmod u+wx -R /opt/tomcat/webapps
+WORKDIR /app
+COPY pom.xml .
+RUN mvn clean package
+
+COPY /app/target/maven-web-application.war /opt/tomcat/webapps/
+
+

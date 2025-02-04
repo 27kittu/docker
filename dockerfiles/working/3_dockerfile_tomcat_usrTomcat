@@ -1,0 +1,27 @@
+FROM alpine
+
+# Install necessary packages
+RUN apk add --no-cache openjdk11-jre zip sudo && \
+    adduser -D -s /bin/ash tomcat -h /home/tomcat && \
+    addgroup tomcat wheel && \
+    echo "tomcat ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/tomcat && \
+    chmod 0440 /etc/sudoers.d/tomcat
+
+# Change to the root user to perform operations that require elevated privileges
+USER root
+
+# Set the working directory
+WORKDIR /app
+
+# Download and unzip Apache Tomcat
+ADD https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.96/bin/apache-tomcat-8.5.96.zip /app
+RUN unzip apache-tomcat-8.5.96.zip && \
+    mv apache-tomcat-8.5.96 tomcat && \
+    chmod 700 -R tomcat/ && \
+    chown -R tomcat:tomcat /app/tomcat && \
+    chmod u+x tomcat/bin/*.sh
+
+# Switch back to the non-root user
+USER tomcat
+EXPOSE 8080
+CMD ["/app/tomcat/bin/catalina.sh","run"]

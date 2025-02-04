@@ -1,0 +1,30 @@
+version: "3.1"
+services:
+  serv1:
+    image: heartocean/docom:1
+    environment:
+      MONGO_DB_USERNAME: tom
+      MONGO_DB_PASSWORD: tomdb123
+      MONGO_DB_HOSTNAME: dbmongo
+    ports:
+      - 80:8080
+    networks:
+      - springnet
+    deploy:
+      mode: replicated
+        #replicas: 2
+  dbmongo:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: tom 
+      MONGO_INITDB_ROOT_PASSWORD: tomdb123
+    expose:
+      - 27017
+    networks:
+      - springnet
+    volumes:
+      - mongovol1:/data/db
+networks:
+  springnet:
+volumes: 
+  mongovol1:

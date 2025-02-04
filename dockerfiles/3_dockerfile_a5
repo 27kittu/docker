@@ -1,0 +1,8 @@
+FROM alpine:latest
+RUN apk add wget openjdk11 \
+&& wget -P /opt https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.92/src/apache-tomcat-8.5.92-src.tar.gz \ 
+&& cd /opt \
+&& tar -xzvf apache-tomcat-8.5.92-src.tar.gz \ 
+&& chmod u+x -R /opt/apache-tomcat-8.5.92-src \
+&& ls -l /opt/apache-tomcat-8.5.92-src/bin
+CMD ["bash","/opt/apache-tomcat-8.5.92-src/bin/startup.sh","start"]

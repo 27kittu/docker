@@ -1,0 +1,29 @@
+version: "3"
+services:
+  app2: 
+    image: heartocean/docom:1
+    environment:
+      - MONGO_DB_HOSTNAME=mongo
+      - MONGO_DB_USERNAME=devdb
+      - MONGO_DB_PASSWORD=devdb@123
+    ports:
+      - 80:8080
+    networks:
+      - flower1
+    depends_on:
+      - mongod
+    working_dir: /tom
+  mongod:
+    image: mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=devdb
+      - MONGO_INITDB_ROOT_PASSWORD=devdb@123
+    networks:
+      - flower1
+    volumes:
+      - mongoBird:/data/db
+networks:
+  flower1:
+volumes:
+  mongoBird:

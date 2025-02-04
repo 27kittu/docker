@@ -1,0 +1,15 @@
+FROM alpine
+WORKDIR /nex
+ADD https://download.sonatype.com/nexus/3/nexus-3.43.0-01-unix.tar.gz .
+USER nexus
+RUN apk add --no-cache java8 tar\
+&& tar -xzvf nexus-3.43.0-01-unix.tar.gz \
+&& mkdir nexus \
+&& mv nexus-3.43.0-01-unix sona* nexus \
+&& chmod 757 -R nexus \
+&& chown nexus:nexus -R nexus \
+&& cat > /nex/nexus/bin/nexus.rc<<eof
+run_as=nexus
+eof 
+EXPOSE 8081
+ENTRYPOINT ["/nex/nexus/bin/nexus.sh","start"]

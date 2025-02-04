@@ -1,0 +1,11 @@
+FROM alpine:latest as built
+RUN apk add openjdk11 maven
+WORKDIR /maven_built
+COPY . .
+RUN mvn clean package
+
+
+
+FROM heartocean/working:tomcat
+COPY --from=built /maven_built/target/maven-web-application.war /app/tomcat/webapps/maven-web-application.war
+

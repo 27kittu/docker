@@ -1,0 +1,6 @@
+FROM alpine:latest
+RUN apk add openjdk11 
+ADD https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.92/src/apache-tomcat-8.5.92-src.tar.gz /opt
+ENV CATALINA_HOME="/opt/apache-tomcat-8.5.92/bin"
+RUN export PATH=$PATH:CATALINA_HOME
+CMD ["catalina.sh", "run"]

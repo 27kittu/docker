@@ -1,0 +1,23 @@
+version: "3.1"
+services:
+  dogapp:
+    image: heartocean/docom:1
+    ports:  
+      - 80:8080
+    environment:
+      - MONGO_DB_HOSTNAME=mongo
+      - MONGO_DB_USERNAME=tango
+      - MONGO_DB_PASSWORD=tango@123
+    networks:
+      - dognetwork
+  dogstore:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: tango
+      MONGO_INITDB_ROOT_PASSWORD: tango@123
+    volumes:
+      - dogvolume:/data/db
+networks:
+  dognetwork:
+volumes:
+  dogvolume:

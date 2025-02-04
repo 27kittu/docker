@@ -1,0 +1,22 @@
+FROM alpine as build
+WORKDIR /app
+COPY . /app
+ADD https://dlcdn.apache.org/maven/maven-3/3.9.5/binaries/apache-maven-3.9.5-bin.zip /app
+RUN apk add --no-cache openjdk11 zip \
+&& unzip apache-maven-3.9.5-bin.zip \
+&& mv apache-maven-3.9.5 maven \
+&& chmod 700 -R maven  \
+&& /app/maven/bin/mvn clean package
+
+FROM alpine
+RUN apk add --no-cache openjdk11-jre zip
+WORKDIR /tom
+ADD https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.96/bin/apache-tomcat-8.5.96.zip /tom
+RUN unzip apache-tomcat-8.5.96.zip \
+&&  mv apache-tomcat-8.5.96 tomcat  \
+&&  chmod 700 -R /tom/tomcat/  \
+&&  chmod u+x /tom/tomcat/bin/*.sh
+COPY --from=build /app/target/spring-boot-mongo*.jar /tom/tomcat/webapps/spring-boot-mongo.jar
+EXPOSE 8080
+#CMD ["/tom/tomcat/bin/catalina.sh","run"]
+ENTRYPOINT ["java", "-jar", "/tom/tomcat/webapps/spring-boot-mongo.jar"]

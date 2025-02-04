@@ -1,0 +1,12 @@
+FROM alpine
+WORKDIR /son
+ADD https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-10.2.1.78527.zip .
+USER sonar
+RUN apk add java zip\
+&& unzip sonarqube-10.2.1.78527.zip\
+&& mkdir sonar \
+&& mv sonarqube-10.2.1.78527 sonar \
+&& chmod 757 -R sonar \
+&& chown sonar:sonar -R sonar 
+EXPOSE 9000
+ENTRYPOINT ["/son/sonar/bin/linux-x86-64/sonar.sh","start"]
