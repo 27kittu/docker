@@ -1,6 +1,6 @@
-ARG user
+ARG user # available only here but not from 'FROM alpine'
 FROM alpine
 WORKDIR /app
-USER $user #used only during this creation of layer
-ENV $user  #used to persistent in the final layer  
+USER $user # Here 'user' is absent and error unless passed at buildtime
+ENV $user  #used to persist till the final layer but if given at buildtime
 CMD ["sleep","300"]
