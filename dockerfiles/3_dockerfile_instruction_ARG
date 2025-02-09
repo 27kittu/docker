@@ -1,6 +1,6 @@
 ARG user # available only here but not from 'FROM alpine'
 FROM alpine
-ARG user #it has to be initialized after 'FROM'. Initialized.
+ARG user #it has to be initialized after 'FROM' now Initialized.
 WORKDIR /app
 USER ${user} #'user' is absent unless passed at buildtime
 ENV user=${user} # persists till final layer unless given at buildtime
