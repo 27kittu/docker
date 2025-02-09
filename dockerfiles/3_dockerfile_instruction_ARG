@@ -1,7 +1,8 @@
 ARG user # available only here but not from 'FROM alpine'
 FROM alpine
-ARG user #it has to be initialized after 'FROM' now Initialized.
+ARG user #it has to be initialized after 'FROM'. Initialized.
 WORKDIR /app
 USER ${user} #'user' is absent unless passed at buildtime
-ENV user=${user} # persists till final layer unless given at buildtime
+# Docker interprets everything in ENV as key-value pairs diff line is btr
+ENV user=${user}
 CMD ["sleep","300"]
