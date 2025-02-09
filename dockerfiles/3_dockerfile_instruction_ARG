@@ -1,5 +1,6 @@
 ARG user
 FROM alpine
 WORKDIR /app
-USER $user
+USER $user #used only during this creation of layer
+ENV $user  #used to persistent in the final layer  
 CMD ["sleep","300"]
