@@ -1,0 +1,5 @@
+ARG user
+FROM alpine
+WORKDIR /app
+USER $user
+CMD ["sleep","300"]

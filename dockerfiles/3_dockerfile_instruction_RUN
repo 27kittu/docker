@@ -1,0 +1,6 @@
+FROM alpine
+RUN apk add --no-cache tar \
+openjdk11 \
+wget \
+doas 
+CMD ["sleep", "300"]
