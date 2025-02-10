@@ -1,19 +1,19 @@
 FROM maven as built
 WORKDIR /build
 COPY . .
-RUN mvn clean package
+RUN mvn clean package && ls /build
 
 FROM alpine
 ARG user
 ENV user=${user}
-WORKDIR /app
 ADD https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.98/bin/apache-tomcat-9.0.98.tar.gz /opt
+WORKDIR /app
 RUN apk add openjdk11 wget doas \
   && adduser -D ${user} \
   && tar -xzvf /opt/apache-tomcat-9.0.98.tar.gz -C /opt \
   && mv /opt/apache-tomcat-9.0.98 /app/tomcat \
   && chown -R ${user}:${user} /app/tomcat \
   && chmod -R 0700 /app/tomcat 
-COPY --from=built /build/spring-boot-mongo-1.0.jar /app/tomcat/wepapps/spring-boot-mongo-1.0.jar
+COPY --from=built /build/spring-boot-mongo-1.0.jar /app/tomcat/webapps/spring-boot-mongo-1.0.jar
 USER ${user}
 CMD ["tomcat/bin/catalina.sh", "run"]
